@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin> -->
+    <!-- <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300&family=Sevillana&display=swap" rel="stylesheet"> -->
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <!-- Web App Config -->
+    <title>ShareINgo</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#3367d6">
+    <meta name="color-scheme" content="dark light">
+    <meta name="apple-mobile-web-app-capable" content="no">
+    <meta name="apple-mobile-web-app-title" content="ShareINgo">
+    <!-- Descriptions -->
+    <meta name="description" content="Instantly share images, videos, PDFs, and links with people nearby. Peer2Peer, No Setup, No Signup.">
+    <meta name="keywords" content="File, Transfer, Share, Peer2Peer">
+    <meta property="og:type" content="article">
+
+    <meta name="twitter:description" content="Instantly share images, videos, PDFs, and links with people nearby. Peer2Peer No Setup, No Signup.">
+    <meta name="og:description" content="Instantly share images, videos, PDFs, and links with people nearby. Peer2Peer and Open Source. No Setup, No Signup.">
+    <!-- Icons -->
+    <link rel="icon" sizes="96x96" href="images/favicon-96x96.png">
+    <link rel="shortcut icon" href="images/favicon-96x96.png">
+    <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+    <meta name="msapplication-TileImage" content="images/mstile-150x150.png">
+
+    <!-- Resources -->
+    <link rel="stylesheet" type="text/css" href="styles.css">
+    <link rel="manifest" href="manifest.json">
+        <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+        <img id="logo" src="images/logo_ka_kaam_hai_kehna.png" alt="image">
+
+</head>
+
+<body translate="no">
+
+    <div id="warning" style="display:none"></div>
+    <header class="row-reverse">
+      <a href="#about" class="icon-button" title="aboutShareingo">
+            <svg class="icon">
+                <use xlink:href="#info-outline" />
+            </svg>
+        </a>
+
+        <a href="#home" class="nav-button" title="home">Home</a>
+        <a href="#about us" class="nav-button" title="About us">About us</a>
+        <a href="#faq" class="nav-button" title="FAQ">FAQ</a>
+        <a href="#pricing" class="nav-button" title="Pricing">Pricing</a>
+
+
+        <a href="#" id="theme" class="icon-button" title="
+        switch themes">
+            <svg class="icon">
+                <use xlink:href="#icon-theme" />
+            </svg>
+        </a>
+        <!-- <a href="#" id="notification" class="icon-button" title="
+        Enable notifications" hidden>
+            <svg class="icon">
+                <use xlink:href="#notifications" />
+            </svg>
+        </a> -->
+    </header>
+
+    <!-- outside box -->
+    <div class="o_box">
+        <div id="peer-container">ALL PEERS HERE</div>
+    </div>
+
+    <!-- Peers -->
+    <x-peers class="center"></x-peers>
+    <x-no-peers>
+        <div class="waviy">
+            <span style="--i:1">W</span>
+            <span style="--i:3">a</span>
+            <span style="--i:5">i</span>
+            <span style="--i:6">t</span>
+            <span style="--i:6">i</span>
+            <span style="--i:7">n</span>
+            <span style="--i:8">g</span>
+           </div>
+           <style>
+            .waviy {
+  position: relative;
+}
+.waviy span {
+  position: relative;
+  display: inline-block;
+  font-size: 24px;
+  top: 40px;
+  color: #00ffea;
+  text-transform: uppercase;
+  animation: flip 2s infinite;
+  animation-delay: calc(.2s * var(--i))
+}
+@keyframes flip {
+  0%,80% {
+    transform: rotateY(360deg)
+  }
+}
+           </style>
+        <h2>for other devices to join</h2>
+    </x-no-peers>
+    <x-instructions desktop="Click the icon to send the file or right-click to send the text" mobile="Tap the icon to send the file or long press the icon to send the text">
+        <div>If the connection is interrupted, please refresh the page or re-enter the password</div>
+    </x-instructions>
+    <!-- Footer -->
+    <footer id="showJoin" class="column">
+        <!-- <a href="#" id="showJoin" title="Click to enter the connector password"> -->
+            <!-- <svg class="icon logo">
+                <use xlink:href="#wifi-tethering" />
+            </svg> -->
+        <!-- </a> -->
+
+
+        <div class="footer_content">
+            <button id="room_btn">Create / Join Room</button>
+            <span>
+                <div id="displayName" placeholder="Share files in the easiest way"></div>
+        <div class="font-body2">Devices not on the same intranet can discover each other by entering the same password</div>
+            </span>
+
+        </div>
+
+    </footer>
+    <!-- Join Room Dialog -->
+    <x-dialog id="joinRoomDialog">
+        <form action="#">
+            <x-background class="full center">
+                <x-paper shadow="2">
+                    <div id="qrcode"></div>
+                    <h3>Connector password (blank returns to intranet mode)</h3>
+                    <input type="text" id="roomInput" class="textarea" style="width:100%" autocomplete="off" autofocus contenteditable>
+                    <div class="row-reverse">
+                        <button class="button" type="submit" close>confirm</button>
+                       <a class="button" close>Cancel</a>
+                    </div>
+                </x-paper>
+            </x-background>
+        </form>
+    </x-dialog>
+    <!-- Receive Dialog -->
+    <x-dialog id="receiveDialog">
+        <x-background class="full center">
+            <x-paper shadow="2">
+                <h3>file received</h3>
+                <div class="font-subheading" id="fileName">file name</div>
+                <div class="font-body2" id="fileSize"></div>
+                <div class='preview' style="visibility: hidden;">
+                    <img id='img-preview' src="">
+                </div>
+                <div class="row">
+                    <label for="autoDownload" class="grow">Ask every time before saving a file</label>
+                    <input type="checkbox" id="autoDownload" checked="">
+                </div>
+                <div class="row-reverse">
+                    <a class="button" close id="download" title="save document" autofocus>keep</a>
+                    <button class="button" close>
+                        give up</button>
+                </div>
+            </x-paper>
+        </x-background>
+    </x-dialog>
+    <!-- Send Text Dialog -->
+    <x-dialog id="sendTextDialog">
+        <form action="#">
+            <x-background class="full center">
+                <x-paper shadow="2">
+                    <h3>send messages</h3>
+                    <div id="textInput" class="textarea" role="textbox" placeholder="Please enter a text message" autocomplete="off" autofocus contenteditable></div>
+                    <div class="row-reverse">
+                        <button class="button" type="submit" close>send</button>
+                        <a class="button" close>
+                            Cancel</a>
+                    </div>
+                </x-paper>
+            </x-background>
+        </form>
+    </x-dialog>
+    <!-- Receive Text Dialog -->
+    <x-dialog id="receiveTextDialog">
+        <x-background class="full center">
+            <x-paper shadow="2">
+                <h3>
+                    message received</h3>
+                <div class="font-subheading" id="text"></div>
+                <div class="row-reverse">
+                    <button class="button" id="copy" close autofocus>
+                        copy</button>
+                    <button class="button" close>closure</button>
+                </div>
+            </x-paper>
+        </x-background>
+    </x-dialog>
+    <!-- Toast -->
+    <div class="toast-container full center">
+        <x-toast class="row" shadow="1" id="toast">File sent successfully</x-toast>
+    </div>
+    <!-- About Page -->
+    <x-about id="about" class="full center column">
+        <section class="center column fade-in">
+            <header class="row-reverse">
+                <a href="#" class="close icon-button">
+                    <svg class="icon">
+                        <use xlink:href="#close" />
+                    </svg>
+                </a>
+            </header>
+            <svg class="icon logo">
+                <use xlink:href="#wifi-tethering" />
+            </svg>
+            <h1>Shareingo</h1>
+            <div class="font-subheading">Better Faster Secure<div style="font-size:10px;"> <a href="" target="_blank">SharinGo</a></div>
+            </div>
+            <div class="row">
+
+
+                    <!-- <svg class="icon">
+                        <use xlink:href="#monetarization" />
+                    </svg> -->
+                </a>
+
+
+            </div>
+        </section>
+        <x-background></x-background>
+    </x-about>
+    <!-- <img class="example" src="icons8-rocket-100-2.png"  width="100"> -->
+
+    <!-- SVG Icon Library -->
+    <svg style="display: none;">
+
+        <symbol id=desktop-mac viewBox="0 0 24 24">
+            <path d="M21 2H3c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h7l-2 3v1h8v-1l-2-3h7c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 12H3V4h18v10z">
+            </path>
+        </symbol>
+        <symbol id=phone-iphone viewBox="0 0 24 24">
+            <path d="M15.5 1h-8C6.12 1 5 2.12 5 3.5v17C5 21.88 6.12 23 7.5 23h8c1.38 0 2.5-1.12 2.5-2.5v-17C18 2.12 16.88 1 15.5 1zm-4 21c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zm4.5-4H7V4h9v14z">
+            </path>
+        </symbol>
+        <symbol id=tablet-mac viewBox="0 0 24 24">
+            <path d="M18.5 0h-14C3.12 0 2 1.12 2 2.5v19C2 22.88 3.12 24 4.5 24h14c1.38 0 2.5-1.12 2.5-2.5v-19C21 1.12 19.88 0 18.5 0zm-7 23c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zm7.5-4H4V3h15v16z">
+            </path>
+        </symbol>
+        <symbol id=info-outline viewBox="0 0 24 24">
+            <path d="M11 17h2v-6h-2v6zm1-15C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zM11 9h2V7h-2v2z">
+            </path>
+        </symbol>
+        <symbol id=close viewBox="0 0 24 24">
+            <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z">
+            </path>
+        </symbol>
+        <symbol id=help-outline viewBox="0 0 24 24">
+            <path d="M11 18h2v-2h-2v2zm1-16C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm0-14c-2.21 0-4 1.79-4 4h2c0-1.1.9-2 2-2s2 .9 2 2c0 2-3 1.75-3 5h2c0-2.25 3-2.5 3-5 0-2.21-1.79-4-4-4z">
+            </path>
+        </symbol>
+        <symbol id="twitter">
+            <path d="M23.954 4.569c-.885.389-1.83.654-2.825.775 1.014-.611 1.794-1.574 2.163-2.723-.951.555-2.005.959-3.127 1.184-.896-.959-2.173-1.559-3.591-1.559-2.717 0-4.92 2.203-4.92 4.917 0 .39.045.765.127 1.124C7.691 8.094 4.066 6.13 1.64 3.161c-.427.722-.666 1.561-.666 2.475 0 1.71.87 3.213 2.188 4.096-.807-.026-1.566-.248-2.228-.616v.061c0 2.385 1.693 4.374 3.946 4.827-.413.111-.849.171-1.296.171-.314 0-.615-.03-.916-.086.631 1.953 2.445 3.377 4.604 3.417-1.68 1.319-3.809 2.105-6.102 2.105-.39 0-.779-.023-1.17-.067 2.189 1.394 4.768 2.209 7.557 2.209 9.054 0 13.999-7.496 13.999-13.986 0-.209 0-.42-.015-.63.961-.689 1.8-1.56 2.46-2.548l-.047-.02z" />
+        </symbol>
+        <symbol id="github">
+            <path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12" />
+        </symbol>
+        <g id="notifications">
+            <path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.89 2 2 2zm6-6v-5c0-3.07-1.64-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.63 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2z" />
+        </g>
+        <symbol id="homescreen">
+            <path fill="none" d="M0 0h24v24H0V0z" />
+            <path d="M18 1.01L8 1c-1.1 0-2 .9-2 2v3h2V5h10v14H8v-1H6v3c0 1.1.9 2 2 2h10c1.1 0 2-.9 2-2V3c0-1.1-.9-1.99-2-1.99zM10 15h2V8H5v2h3.59L3 15.59 4.41 17 10 11.41z" />
+            <path fill="none" d="M0 0h24v24H0V0z" />
+        </symbol>
+        <symbol id="monetarization">
+            <path d="M0 0h24v24H0z" fill="none" />
+            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1.41 16.09V20h-2.67v-1.93c-1.71-.36-3.16-1.46-3.27-3.4h1.96c.1 1.05.82 1.87 2.65 1.87 1.96 0 2.4-.98 2.4-1.59 0-.83-.44-1.61-2.67-2.14-2.48-.6-4.18-1.62-4.18-3.67 0-1.72 1.39-2.84 3.11-3.21V4h2.67v1.95c1.86.45 2.79 1.86 2.85 3.39H14.3c-.05-1.11-.64-1.87-2.22-1.87-1.5 0-2.4.68-2.4 1.64 0 .84.65 1.39 2.67 1.91s4.18 1.39 4.18 3.91c-.01 1.83-1.38 2.83-3.12 3.16z" />
+        </symbol>
+        <!-- <symbol id="icon-theme" viewBox="0 0 24 24">
+            <rect fill="none" height="24" width="24" />
+            <path d="M12,3c-4.97,0-9,4.03-9,9s4.03,9,9,9s9-4.03,9-9c0-0.46-0.04-0.92-0.1-1.36c-0.98,1.37-2.58,2.26-4.4,2.26 c-2.98,0-5.4-2.42-5.4-5.4c0-1.81,0.89-3.42,2.26-4.4C12.92,3.04,12.46,3,12,3L12,3z" />
+        </symbol> -->
+    </svg>
+    <!-- Scripts -->
+        <script>
+        confetti({
+  particleCount: 100,
+  startVelocity: 30,
+  spread: 360,
+  origin: {
+    x: Math.random(),
+    // since they fall down, start a bit higher than random
+    y: Math.random() - 0.2
+  }
+});
+    </script>
+    <script src="scripts/network.js"></script>
+    <script src="scripts/ui.js"></script>
+    <script src="scripts/theme.js" async></script>
+    <script src="scripts/clipboard.js" async></script>
+    <script src="scripts/checkbrowser.js"></script>
+    <script src="scripts/qrcode.js"></script>
+    <!-- Sounds -->
+    <audio id="blop" autobuffer="true">
+        <source src="/sounds/blop.mp3" type="audio/mpeg">
+        <source src="/sounds/blop.ogg" type="audio/ogg">
+    </audio>
+    <!-- no script -->
+    <noscript>
+        <x-noscript class="full center column">
+            <h1>enable JavaScript</h1>
+            <h3>ShareINgo
+                operation needs JavaScript support</h3>
+        </x-noscript>
+        <style>
+            x-noscript {
+                background: #599cfc;
+                color: white;
+                z-index: 2;
+            }
+
+            a[href="#info"] {
+                color: white;
+            }
+        </style>
+    </noscript>
+</body>
